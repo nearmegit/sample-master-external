@@ -51,13 +51,23 @@ pipeline {
                     }
             steps {
 			    echo 'testing k8 step'
+			    echo 'Get cluster credentials'
+				sh '''
+					gcloud container clusters get-credentials cluster-demotest \
+					--zone us-central1-a --project dtc-102021-u104
+					'''
+					echo 'use kubectl set image to update image for container'
+					echo "$imageName:$BUILD_NUMBER"
+				sh '''
+					kubectl set image deployment/events-external events-external=$imageName:$BUILD_NUMBER --record
+					'''
              }
         }     
         stage('Remove local docker image') {
             steps{
 			    echo 'will do later'
-                //sh "docker rmi $imageName:latest"
-                //sh "docker rmi $imageName:$BUILD_NUMBER"
+                sh "docker rmi $imageName:latest"
+                sh "docker rmi $imageName:$BUILD_NUMBER"
             }
         }
     }
