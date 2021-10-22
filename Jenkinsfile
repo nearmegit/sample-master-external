@@ -17,10 +17,11 @@ pipeline {
             steps {
                 echo 'Retrieve source from github. run npm install and npm test' 
 				echo 'Retrieving source from github'
-				git branch: 'master',
+				git branch: 'develop',
 				url: 'https://github.com/bDolphin/sample-master-external.git'
 				echo 'Did we get the source?'
 				sh 'ls -a'
+				sh 'npm run test'
 				echo 'Tests passed on to build and deploy Docker container'
             }
         }
@@ -59,7 +60,7 @@ pipeline {
 					echo 'use kubectl set image to update image for container'
 					echo "$imageName:$BUILD_NUMBER"
 				sh '''
-					kubectl set image deployment/events-external events-external=$imageName:$BUILD_NUMBER --record
+					kubectl set image deployment/events-external events-external=$imageName:$BUILD_NUMBER --record --namespace development
 					'''
              }
         }     
