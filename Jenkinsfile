@@ -21,6 +21,7 @@ pipeline {
 				url: 'https://github.com/bDolphin/sample-master-external.git'
 				echo 'Did we get the source?'
 				sh 'ls -a'
+                sh 'npm install'
 				sh 'npm run test'
 				echo 'Tests passed on to build and deploy Docker container'
             }
