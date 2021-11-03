@@ -1,0 +1,6 @@
+FROM node:12
+WORKDIR /app
+COPY . .
+RUN npm update && \
+    npm install -g mocha
+CMD ["mocha", "test/test-server.js", "--reporter", "spec"]
